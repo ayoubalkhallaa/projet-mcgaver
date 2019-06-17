@@ -81,8 +81,7 @@ while continuer:
         niveau.afficher(fenetre)
 
         #Création de Donkey Kong
-        dk = Perso("images/dk_droite.png", "images/dk_gauche.png", 
-        "images/dk_haut.png", "images/dk_bas.png", niveau)
+        dk = Perso(MG_IMG, niveau)
         #création des objets
         item1 = Item(image_item1, niveau)
         item2 = Item(image_item2, niveau)

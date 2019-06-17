@@ -2,3 +2,4 @@
 Pipfile
 Pipfile.lock
 settings.json
+__pycache__
