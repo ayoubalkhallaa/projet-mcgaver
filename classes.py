@@ -12,6 +12,8 @@ class Niveau:
     def __init__(self, fichier):
         self.fichier = fichier
         self.structure = 0
+        self.win = pygame.image.load(WIN).convert_alpha()
+        self.lose = pygame.image.load(LOSE).convert_alpha()
 
     def generer(self):
         """Méthode permettant de générer le niveau en fonction du fichier.
@@ -129,7 +131,7 @@ class Perso:
 
 
 class Item:
-    """Classe permettant de créer un personnage"""
+    """Item managment, get random position"""
 
     def __init__(self, image, niveau):
         # Sprites du personnage
