@@ -78,8 +78,9 @@ while continuer:
         niveau.generer()
         niveau.afficher(fenetre)
 
-        # Création de Donkey Kong
-        dk = Perso(MG_IMG, niveau)
+        # Création de Mac Gyver
+        mg = Perso(MG_IMG, niveau)
+
         # création des objets
         item1 = Item(image_item1, niveau)
         item2 = Item(image_item2, niveau)
@@ -105,32 +106,32 @@ while continuer:
 
                 # Touches de déplacement de Donkey Kong
                 elif event.key == K_RIGHT:
-                    dk.deplacer('droite')
+                    mg.deplacer('droite')
                 elif event.key == K_LEFT:
-                    dk.deplacer('gauche')
+                    mg.deplacer('gauche')
                 elif event.key == K_UP:
-                    dk.deplacer('haut')
+                    mg.deplacer('haut')
                 elif event.key == K_DOWN:
-                    dk.deplacer('bas')
+                    mg.deplacer('bas')
 
         # Affichages aux nouvelles positions
         fenetre.blit(fond, (0, 0))
         niveau.afficher(fenetre)
         # dk.direction = l'image dans la bonne direction
-        fenetre.blit(dk.direction, (dk.x, dk.y))
+        fenetre.blit(mg.mg, (mg.x, mg.y))
         # Condition d'affichage de l'image
         if niveau.structure[item1.case_y][item1.case_x] == 'i':
             fenetre.blit(item1.image, (item1.x, item1.y))
 
         niveau.afficher(fenetre)
         # dk.direction = l'image dans la bonne direction
-        fenetre.blit(dk.direction, (dk.x, dk.y))
+        fenetre.blit(mg.mg, (mg.x, mg.y))
         # Condition d'affichage de l'image
         if niveau.structure[item2.case_y][item2.case_x] == 'i':
             fenetre.blit(item2.image, (item2.x, item2.y))
 
         # dk.direction = l'image dans la bonne direction
-        fenetre.blit(dk.direction, (dk.x, dk.y))
+        fenetre.blit(mg.mg, (mg.x, mg.y))
         # Condition d'affichage de l'image
         if niveau.structure[item3.case_y][item3.case_x] == 'i':
             fenetre.blit(item3.image, (item3.x, item3.y))
@@ -138,14 +139,14 @@ while continuer:
         pygame.display.flip()
 
         # Victoire -> Retour à l'accueil
-        if niveau.structure[dk.case_y][dk.case_x] == 'a'and dk.compteur == 3:
+        if niveau.structure[mg.case_y][mg.case_x] == 'a' and mg.compteur == 3:
             fenetre.blit(niveau.win, (0, 0))
             pygame.display.flip()
             # Put game in pause for two seconds
             pygame.time.delay(2000)
             continuer_jeu = 0
         # Defeat
-        else:
+        elif niveau.structure[mg.case_y][mg.case_x] == 'a' and mg.compteur != 3:
             fenetre.blit(niveau.lose, (0, 0))
             pygame.display.flip()
             # Put game in pause for two seconds
