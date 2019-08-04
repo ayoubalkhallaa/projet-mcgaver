@@ -1,4 +1,4 @@
-"""Classes du jeu de Labyrinthe Donkey Kong"""
+"""Classes of the MCGAVER Labyrinth Game"""
 
 import pygame
 from pygame.locals import *
@@ -7,7 +7,7 @@ from random import *
 
 
 class Niveau:
-    """Classe permettant de créer un niveau"""
+    """Class to create a level"""
 
     def __init__(self, fichier):
         self.fichier = fichier
@@ -16,91 +16,91 @@ class Niveau:
         self.lose = pygame.image.load(LOSE).convert_alpha()
 
     def generer(self):
-        """Méthode permettant de générer le niveau en fonction du fichier.
-        On crée une liste générale, contenant une liste par ligne à afficher"""
-        # On ouvre le fichier
+        """Method for generating the level according to the file.
+We create a general list, containing a list by line to display"""
+        # Open the file
         with open(self.fichier, "r") as fichier:
             structure_niveau = []
-            # On parcourt les lignes du fichier
+            # We go through the lines of the file
             for ligne in fichier:
                 ligne_niveau = []
-                # On parcourt les sprites (lettres) contenus dans le fichier
+                # We go through the sprites (letters) contained in the file
                 for sprite in ligne:
-                    # On ignore les "\n" de fin de ligne
+                    # We ignore the end of line "\ n"
                     if sprite != '\n':
-                        # On ajoute le sprite à la liste de la ligne
+                        # We add the sprite to the list of the line
                         ligne_niveau.append(sprite)
-                # On ajoute la ligne à la liste du niveau
+                # Add the line to the level list
                 structure_niveau.append(ligne_niveau)
-            # On sauvegarde cette structure
+            # We safeguard this structure
             self.structure = structure_niveau
 
     def afficher(self, fenetre):
-        """Méthode permettant d'afficher le niveau en fonction 
-        de la liste de structure renvoyée par generer()"""
-        # Chargement des images (seule celle d'arrivée contient de la transparence)
+        """Method for displaying the level according to
+         of the structure list returned by generer()"""
+        # Loading images (only incoming ones contain transparency)
         mur = pygame.image.load(image_mur).convert()
         depart = pygame.image.load(image_depart).convert()
         arrivee = pygame.image.load(image_arrivee).convert_alpha()
 
-        # On parcourt la liste du niveau
+        # We go through the level list
         num_ligne = 0
         for ligne in self.structure:
-            # On parcourt les listes de lignes
+            # We go through the lists of lines
             num_case = 0
             for sprite in ligne:
-                # On calcule la position réelle en pixels
+                # The actual position in pixels is calculated
                 x = num_case * taille_sprite
                 y = num_ligne * taille_sprite
-                if sprite == 'm':  # m = Mur
+                if sprite == 'm':  # m = Wall
                     fenetre.blit(mur, (x, y))
-                elif sprite == 'd':  # d = Départ
+                elif sprite == 'd':  # d = Departure
                     fenetre.blit(depart, (x, y))
-                elif sprite == 'a':  # a = Arrivée
+                elif sprite == 'a':  # a = Arrival
                     fenetre.blit(arrivee, (x, y))
                 num_case += 1
             num_ligne += 1
 
 
 class Perso:
-    """Classe permettant de créer un personnage"""
+    """Class to create a character"""
 
     def __init__(self, mg_img, niveau):
-        # Sprites du personnage
+        # Sprites of the character
         self.mg = pygame.image.load(mg_img).convert_alpha()
 
-        # Position du personnage en cases et en pixels
+        # Character position in boxes and pixels
         self.case_x = 0
         self.case_y = 0
         self.x = 0
         self.y = 0
-        # Niveau dans lequel le personnage se trouve
+        # Level in which the character is located
         self.niveau = niveau
-        # Compteur d'objet ramassés
+        # Object counter picked up
         self.compteur = 0
 
     def deplacer(self, direction):
-        """Methode permettant de déplacer le personnage"""
+        """Method for moving the character"""
 
         if self.niveau.structure[self.case_y][self.case_x] == 'i':
             self.niveau.structure[self.case_y][self.case_x] = '0'
             self.compteur += 1
-            print("Un objet vient d'être ramassé")
-            print("il en possède : ", self.compteur)
-        # Déplacement vers la droite
+            print("An object has just been picked up")
+            print("he owns : ", self.compteur)
+        # Move to the right
         if direction == 'droite':
-            # Pour ne pas dépasser l'écran
+            # Not to exceed the screen
             if self.case_x < (nombre_sprite_cote - 1):
-                # On vérifie que la case de destination n'est pas un mur
+                # We check that the destination box is not a wall
                 if self.niveau.structure[self.case_y][self.case_x+1] != 'm':
-                    # Déplacement d'une case
+                    # Moving a box
                     self.case_x += 1
-                    # Calcul de la position "réelle" en pixel
+                    # Calculation of the "real" position in pixel
                     self.x = self.case_x * taille_sprite
-            # Image dans la bonne direction
+            # Image in the right direction
 
 
-        # Déplacement vers la gauche
+        # Move to the left
         if direction == 'gauche':
             if self.case_x > 0:
                 if self.niveau.structure[self.case_y][self.case_x-1] != 'm':
@@ -108,7 +108,7 @@ class Perso:
                     self.x = self.case_x * taille_sprite
 
 
-        # Déplacement vers le haut
+        # Move up
         if direction == 'haut':
             if self.case_y > 0:
                 if self.niveau.structure[self.case_y-1][self.case_x] != 'm':
@@ -116,7 +116,7 @@ class Perso:
                     self.y = self.case_y * taille_sprite
 
 
-        # Déplacement vers le bas
+        # Move down
         if direction == 'bas':
             if self.case_y < (nombre_sprite_cote - 1):
                 if self.niveau.structure[self.case_y+1][self.case_x] != 'm':
@@ -129,14 +129,14 @@ class Item:
     """Item managment, get random position"""
 
     def __init__(self, image, niveau):
-        # Sprites du personnage
+        # Sprites of the character
         self.image = pygame.image.load(image).convert_alpha()
-        # Position du personnage en cases et en pixels
+        # Character position in boxes and pixels
         self.case_x = 0
         self.case_y = 0
         self.x = 0
         self.y = 0
-        # Niveau dans lequel le personnage se trouve
+        # Level in which the character is located
         self.niveau = niveau
 
         while (self.niveau.structure[self.case_y][self.case_x] != '0'):

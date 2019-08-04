@@ -1,15 +1,15 @@
-"""Constantes du jeu de Labyrinthe Donkey Kong"""
+"""Constants of the MCGAVER Game"""
 
-# Paramètres de la fenêtre
+# Window settings
 nombre_sprite_cote = 15
 taille_sprite = 30
 cote_fenetre = nombre_sprite_cote * taille_sprite
 
-# Personnalisation de la fenêtre
+# Customizing the window
 titre_fenetre = "DK Labyrinthe"
 image_icone = "images/dk_droite.png"
 
-# Listes des images du jeu
+# Lists of the game's images
 image_accueil = "images/accueil.png"
 image_fond = "images/fond.jpg"
 image_mur = "images/mur.png"
