@@ -2,11 +2,14 @@
 # -*- coding: Utf-8 -*
 
 """
-Jeu Donkey Kong Labyrinthe
-Jeu dans lequel on doit déplacer DK jusqu'aux bananes à travers un labyrinthe.
-
 Script Python
 Fichiers : dklabyrinthe.py, classes.py, constantes.py, n1, n2 + images
+
+MCGAVER Labyrinth Game
+Game in which we have to move MCGAVER through a labyrinth.
+
+Python script
+Files: MCGAVER.py, classes.py, constants.py, n1
 """
 
 import pygame
@@ -17,94 +20,94 @@ from constantes import *
 
 pygame.init()
 
-# Ouverture de la fenêtre Pygame (carré : largeur = hauteur)
+# Opening the Pygame window (square: width = height)
 fenetre = pygame.display.set_mode((cote_fenetre, cote_fenetre))
 # Icone
 icone = pygame.image.load(image_icone)
 pygame.display.set_icon(icone)
-# Titre
+# title
 pygame.display.set_caption(titre_fenetre)
 
 
-# BOUCLE PRINCIPALE
+# MAIN LOOP
 continuer = 1
 while continuer:
-    # Chargement et affichage de l'écran d'accueil
+    # Loading and viewing the home screen
     accueil = pygame.image.load(image_accueil).convert()
     fenetre.blit(accueil, (0, 0))
 
-    # Rafraichissement
+    # refreshment
     pygame.display.flip()
 
-    # On remet ces variables à 1 à chaque tour de boucle
+    # These variables are reset to 1 at each loop turn
     continuer_jeu = 1
     continuer_accueil = 1
 
-    # BOUCLE D'ACCUEIL
+    # HOST LOOP
     while continuer_accueil:
 
-        # Limitation de vitesse de la boucle
+        # Speed limitation of the loop
         pygame.time.Clock().tick(30)
 
         for event in pygame.event.get():
 
-            # Si l'utilisateur quitte, on met les variables
-            # de boucle à 0 pour n'en parcourir aucune et fermer
+            # If the user leaves, we put the variables
+            # loop to 0 to browse none and close
             if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                 continuer_accueil = 0
                 continuer_jeu = 0
                 continuer = 0
-                # Variable de choix du niveau
+                # Variable of choice of the level
                 choix = 0
 
             elif event.type == KEYDOWN:
-                # Lancement du niveau 1
+                # Launch of level 1
                 if event.key == K_F1:
-                    continuer_accueil = 0  # On quitte l'accueil
-                    choix = 'n1'  # On définit le niveau à charger
-                # Lancement du niveau 2
+                    continuer_accueil = 0  # We leave home
+                    choix = 'n1'  # We define the level to load
+                # Launch of level 2
                 elif event.key == K_F2:
                     continuer_accueil = 0
                     choix = 'n2'
 
-    # on vérifie que le joueur a bien fait un choix de niveau
-    # pour ne pas charger s'il quitte
+    # we check that the player has made a choice of level
+    # to not load when it leaves
     if choix != 0:
-        # Chargement du fond
+        # Loading the bottom
         fond = pygame.image.load(image_fond).convert()
 
-        # Génération d'un niveau à partir d'un fichier
+        # Generating a level from a file
         niveau = Niveau(choix)
         niveau.generer()
         niveau.afficher(fenetre)
 
-        # Création de Mac Gyver
+        # Mac Gyver creation
         mg = Perso(MG_IMG, niveau)
 
-        # création des objets
+        # creating objects
         item1 = Item(image_item1, niveau)
         item2 = Item(image_item2, niveau)
         item3 = Item(image_item3, niveau)
-    # BOUCLE DE JEU
+    # GAME LOOP
     while continuer_jeu:
 
-        # Limitation de vitesse de la boucle
+        # Speed limitation of the loop
         pygame.time.Clock().tick(30)
 
         for event in pygame.event.get():
 
-            # Si l'utilisateur quitte, on met la variable qui continue le jeu
-            # ET la variable générale à 0 pour fermer la fenêtre
+            # If the user leaves, we put the variable that continues the game
+            # AND the general variable to 0 to close the window
             if event.type == QUIT:
                 continuer_jeu = 0
                 continuer = 0
 
             elif event.type == KEYDOWN:
-                # Si l'utilisateur presse Echap ici, on revient seulement au menu
+                # If the user press Esc here, we just go back to the menu
                 if event.key == K_ESCAPE:
                     continuer_jeu = 0
 
-                # Touches de déplacement de Donkey Kong
+                # Keys of movement of MCGAVER
                 elif event.key == K_RIGHT:
                     mg.deplacer('droite')
                 elif event.key == K_LEFT:
@@ -114,31 +117,31 @@ while continuer:
                 elif event.key == K_DOWN:
                     mg.deplacer('bas')
 
-        # Affichages aux nouvelles positions
+        # Displays at new positions
         fenetre.blit(fond, (0, 0))
         niveau.afficher(fenetre)
-        # dk.direction = l'image dans la bonne direction
+        # MC.direction = the image in the right direction
         fenetre.blit(mg.mg, (mg.x, mg.y))
-        # Condition d'affichage de l'image
+        # Condition of image display
         if niveau.structure[item1.case_y][item1.case_x] == 'i':
             fenetre.blit(item1.image, (item1.x, item1.y))
 
         niveau.afficher(fenetre)
-        # dk.direction = l'image dans la bonne direction
+        # MC.direction = the image in the right direction
         fenetre.blit(mg.mg, (mg.x, mg.y))
-        # Condition d'affichage de l'image
+        # Condition of image display
         if niveau.structure[item2.case_y][item2.case_x] == 'i':
             fenetre.blit(item2.image, (item2.x, item2.y))
 
-        # dk.direction = l'image dans la bonne direction
+        # MC.direction = the image in the right direction
         fenetre.blit(mg.mg, (mg.x, mg.y))
-        # Condition d'affichage de l'image
+        # Condition of image display
         if niveau.structure[item3.case_y][item3.case_x] == 'i':
             fenetre.blit(item3.image, (item3.x, item3.y))
 
         pygame.display.flip()
 
-        # Victoire -> Retour à l'accueil
+        # Victory -> Back to home
         if niveau.structure[mg.case_y][mg.case_x] == 'a' and mg.compteur == 3:
             fenetre.blit(niveau.win, (0, 0))
             pygame.display.flip()
